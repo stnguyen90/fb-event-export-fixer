@@ -221,7 +221,7 @@ and the calendar will display nothing.
                             $('#' + name).parents('.control-group').attr('class', 'control-group');
                             error = true;
                         }
-                        else if ( (name == 'uid' && value.match(/^\d+$/) == null) || (name == 'key' && value.match(/^[A-z]+$/) == null) )
+                        else if ( (name == 'uid' && value.match(/^\d+$/) == null) )
                         {
                             $('#' + name).parents('.control-group').attr('class', 'control-group error');
                             error = true;
