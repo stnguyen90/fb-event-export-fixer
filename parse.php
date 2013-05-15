@@ -5,18 +5,18 @@ require_once("./lib/iCalcreator/iCalcreator.class.php");
 $tz = 'America/Los_Angeles';
 $uid = isset($_GET['uid']) ? $_GET['uid'] : '';
 $key = isset($_GET['key']) ? $_GET['key'] : '';
-$excludes = isset($_GET['excludes']) ? $_GET['excludes'] : array();
-foreach ( $excludes as $exclude )
+$includes = isset($_GET['includes']) ? $_GET['includes'] : array();
+foreach ( $includes as $include )
 {
-    if ( $exclude == 'ar' )
+    if ( $include == 'ar' )
     {
         $ar = true;
     }
-    else if ( $exclude == 'g' )
+    else if ( $include == 'g' )
     {
         $g = true;
     }
-    else if ( $exclude == 'm' )
+    else if ( $include == 'm' )
     {
         $m = true;
     }
@@ -48,19 +48,19 @@ while( $vevent = $v->getComponent("vevent") )
 
     $attendee = $vevent->getProperty('attendee', false, true);
     // check for PARTSTAT=ACCEPTED
-    if ( !empty($g) && !empty($attendee['params']) && $attendee['params']['PARTSTAT'] == 'ACCEPTED' )
+    if ( empty($g) && !empty($attendee['params']) && $attendee['params']['PARTSTAT'] == 'ACCEPTED' )
     {
         // delete event
         $componentsToDelete[] = $uid;
     }
     // check for PARTSTAT=TENTATIVE
-    else if ( !empty($m) && !empty($attendee['params']) && $attendee['params']['PARTSTAT'] == 'TENTATIVE' )
+    else if ( empty($m) && !empty($attendee['params']) && $attendee['params']['PARTSTAT'] == 'TENTATIVE' )
     {
         // delete event
         $componentsToDelete[] = $uid;
     }
     // check for PARTSTAT=NEEDS-ACTION
-    else if ( !empty($ar) && empty($attendee['params']) || $attendee['params']['PARTSTAT'] == 'NEEDS-ACTION' )
+    else if ( empty($ar) && empty($attendee['params']) || $attendee['params']['PARTSTAT'] == 'NEEDS-ACTION' )
     {
         // delete event
         $componentsToDelete[] = $uid;

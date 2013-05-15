@@ -5,9 +5,9 @@ Description
 -----------
 Facebook has a nice feature of being able to export your upcoming events, but there aren't any options when exporting. This app helps solve that issue in 3 easy steps.
 
-1. Copy and paste the Facebook Event Export URL into the FB Events URL input below and select from various options
-2. Copy the link that is generated in the New iCal URL input
-3. Create a new "Other" calendar by clicking on "Add by URL" and paste the URL into the input
+1. Copy and paste the Facebook Event Export URL into the FB Events URL input below
+2. Select from the various export options
+3. Import the calendar using the new iCal URL
 
 Features
 --------

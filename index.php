@@ -12,9 +12,9 @@
             <hr>
             <p>Facebook has a nice feature of being able to export your upcoming events, but there aren't any options when exporting. This app helps solve that issue in 3 easy steps.</p>
             <ol>
-                <li>Copy and paste the Facebook Event Export URL into the FB Events URL input below and select from various options</li>
-                <li>Copy the link that is generated in the New iCal URL input</li>
-                <li>Create a new "Other" calendar by clicking on "Add by URL" and paste the URL into the input</li>
+                <li>Copy and paste the Facebook Event Export URL into the FB Events URL input below</li>
+                <li>Select from the various export options</li>
+                <li>Import the calendar using the new iCal URL</li>
             </ol>
             <form class="form-horizontal">
                 <fieldset>
@@ -48,18 +48,18 @@
 
                     <!-- Multiple Checkboxes (inline) -->
                     <div class="control-group">
-                        <label class="control-label" for="checkboxes">Exclude</label>
+                        <label class="control-label" for="checkboxes">Include Events with Response of</label>
                         <div class="controls">
                             <label class="checkbox inline" for="checkboxes-going">
-                                <input type="checkbox" class="excludes" name="excludes[]" id="checkboxes-going" value="g">
+                                <input type="checkbox" class="includes" name="includes[]" id="checkboxes-going" checked="" value="g">
                                 Going
                             </label>
                             <label class="checkbox inline" for="checkboxes-maybe">
-                                <input type="checkbox" class="excludes" name="excludes[]" id="checkboxes-maybe" value="m">
+                                <input type="checkbox" class="includes" name="includes[]" id="checkboxes-maybe" checked="" value="m">
                                 Maybe
                             </label>
                             <label class="checkbox inline" for="checkboxes-awaitingreply">
-                                <input type="checkbox" class="excludes" name="excludes[]" id="checkboxes-awaitingreply" value="ar">
+                                <input type="checkbox" class="includes" name="includes[]" id="checkboxes-awaitingreply" checked="" value="ar">
                                 Awaiting Reply
                             </label>
                         </div>
@@ -69,9 +69,10 @@
                     <div class="control-group">
                         <label class="control-label" for="iCalURL">New iCal URL</label>
                         <div class="controls">
-                            <input id="iCalURL" name="iCalURL" type="text" placeholder="" class="input-xxlarge">
-                            <button id="copy" name="copy" class="btn" data-clipboard-target="iCalURL">Copy</button>
-                            <p class="help-block">Copy and paste this as your iCal URL.</p>
+                            <input id="iCalURL" name="iCalURL" type="text" placeholder="" class="input-xlarge">
+                            <a id="copy" name="copy" class="btn" data-clipboard-target="iCalURL" disabled="">Copy</a>
+                            <a id="addToGCal" name="addToGCal" class="btn" disabled="" target="_blank">Add to Google Calendar</a>
+                            <p class="help-block">Copy and paste this as your iCal URL or click the button to import to Google Calendar.</p>
                         </div>
                     </div>
 
@@ -149,8 +150,6 @@ and the calendar will display nothing.
         <script src="assets/js/ZeroClipboard.min.js"></script>
 
         <script type="text/javascript">
-            var iCalURLHelpText = 'Copy and paste this as your iCal URL.';
-
             $(document).ready(function()
             {
                 // update the UID and Key inputs when the url input is changed
@@ -176,19 +175,20 @@ and the calendar will display nothing.
                     $("#key, #uid").trigger('change');
                 });
 
-                // update the iCalURL button when the UID, Key inputs or Exclude checkboxes are changed
-                $("#key, #uid, .excludes").on('change', function()
+                // update the iCalURL button when the UID, Key inputs or Include checkboxes are changed
+                $("#key, #uid, .includes").on('change', function()
                 {
                     var uid = $("#uid").val();
                     var key = $("#key").val();
-                    var excludes = $(".excludes:checked");
+                    var includes = $(".includes:checked");
                     var url = window.location.href + 'parse.php?uid=' + uid + '&key=' + key;
-                    excludes.each(function(i, elem)
+                    includes.each(function(i, elem)
                     {
-                        url += '&excludes[]=' + excludes.eq(i).val();
+                        url += '&includes[]=' + includes.eq(i).val();
                     });
                     $("#iCalURL").val(url);
-                    $("#iCalURL").siblings('.help-block').html(iCalURLHelpText + '<br>To add the calendar to your Google Calendar, click <a href="http://www.google.com/calendar/render?cid=' + encodeURIComponent(url) + '" target="_blank">here</a>.');
+                    $("#addToGCal").attr('href', 'http://www.google.com/calendar/render?cid=' + encodeURIComponent(url));
+                    $("#iCalURL").siblings('.btn').removeAttr('disabled');
                     $("#iCalURL").parents('.control-group').addClass('success');
                 });
 
