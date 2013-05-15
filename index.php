@@ -213,22 +213,22 @@ and the calendar will display nothing.
                     var uid = $("#uid").val();
                     var key = $("#key").val();
                     var validationObj = { 'uid' : uid, 'key' : key };
-                    for ( var key in validationObj )
+                    for ( var name in validationObj )
                     {
-                        var value = validationObj[key];
+                        var value = validationObj[name];
                         if ( value.length == 0 )
                         {
-                            $('#' + key).parents('.control-group').attr('class', 'control-group');
+                            $('#' + name).parents('.control-group').attr('class', 'control-group');
                             error = true;
                         }
-                        else if ( (key == 'uid' && value.match(/^\d+$/) == null) || (key == 'key' && value.match(/^[A-z]+$/) == null) )
+                        else if ( (name == 'uid' && value.match(/^\d+$/) == null) || (name == 'key' && value.match(/^[A-z]+$/) == null) )
                         {
-                            $('#' + key).parents('.control-group').attr('class', 'control-group error');
+                            $('#' + name).parents('.control-group').attr('class', 'control-group error');
                             error = true;
                         }
                         else
                         {
-                            $('#' + key).parents('.control-group').attr('class', 'control-group success');
+                            $('#' + name).parents('.control-group').attr('class', 'control-group success');
                         }
                     }
 
