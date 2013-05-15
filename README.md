@@ -3,7 +3,7 @@ FB Event Export Fixer
 
 Description
 -----------
-Facebook has a nice feature of being able to export your upcoming events, but there aren't any options when exporting. This site helps solve that issue in 3 easy steps.
+Facebook has a nice feature of being able to export your upcoming events, but there aren't any options when exporting. This app helps solve that issue in 3 easy steps.
 
 1. Copy and paste the Facebook Event Export URL into the FB Events URL input below and select from various options
 2. Copy the link that is generated in the New iCal URL input
@@ -12,6 +12,7 @@ Facebook has a nice feature of being able to export your upcoming events, but th
 Features
 --------
 - Option to exclude exporting events that you have not replied or have replied as "Going" or "Maybe". 
+- Link to automatically import the iCal to Google Calendar
 
 To Do
 -----

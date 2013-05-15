@@ -10,7 +10,7 @@
         <div class="container">
             <h1>FB Event Export Fixer</h1>
             <hr>
-            <p>Facebook has a nice feature of being able to export your upcoming events, but there aren't any options when exporting. This site helps solve that issue in 3 easy steps.</p>
+            <p>Facebook has a nice feature of being able to export your upcoming events, but there aren't any options when exporting. This app helps solve that issue in 3 easy steps.</p>
             <ol>
                 <li>Copy and paste the Facebook Event Export URL into the FB Events URL input below and select from various options</li>
                 <li>Copy the link that is generated in the New iCal URL input</li>
@@ -71,7 +71,7 @@
                         <div class="controls">
                             <input id="iCalURL" name="iCalURL" type="text" placeholder="" class="input-xxlarge">
                             <button id="copy" name="copy" class="btn" data-clipboard-target="iCalURL">Copy</button>
-                            <p class="help-block">Copy and paste this as your iCal URL</p>
+                            <p class="help-block">Copy and paste this as your iCal URL.</p>
                         </div>
                     </div>
 
@@ -83,10 +83,23 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                            Is my data safe?
+                            Can I selectively choose which events to export?
                         </a>
                     </div>
                     <div id="collapseOne" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            This app is designed to be set up once and then automatically pull new events as they come from FB. Therefore, it doesn't make sense to let you select events, because once those events pass, they'll be gone
+and the calendar will display nothing.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                            Is my data safe?
+                        </a>
+                    </div>
+                    <div id="collapseTwo" class="accordion-body collapse">
                         <div class="accordion-inner">
                             Your data is absolutely safe. We only filter the data from Facebook and send it through. Nothing is saved on our servers.
                         </div>
@@ -94,11 +107,11 @@
                 </div>
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
                             How do I get the FB Events URL?
                         </a>
                     </div>
-                    <div id="collapseTwo" class="accordion-body collapse">
+                    <div id="collapseThree" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <img src="assets/img/fb_event_export_blurred.png">
                         </div>
@@ -106,11 +119,11 @@
                 </div>
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
                             How do I use the iCal URL in Google Calendar?
                         </a>
                     </div>
-                    <div id="collapseThree" class="accordion-body collapse">
+                    <div id="collapseFour" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <img src="assets/img/google_calendar_cropped.png">
                         </div>
@@ -118,11 +131,11 @@
                 </div>
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
                             Who do I contact if I have questions, comments, feature requests, or bug reports?
                         </a>
                     </div>
-                    <div id="collapseFour" class="accordion-body collapse">
+                    <div id="collapseFive" class="accordion-body collapse">
                         <div class="accordion-inner">
                             You can email me at stnguyen90@g33kdev.com
                         </div>
@@ -136,6 +149,8 @@
         <script src="assets/js/ZeroClipboard.min.js"></script>
 
         <script type="text/javascript">
+            var iCalURLHelpText = 'Copy and paste this as your iCal URL.';
+
             $(document).ready(function()
             {
                 // update the UID and Key inputs when the url input is changed
@@ -173,6 +188,7 @@
                         url += '&excludes[]=' + excludes.eq(i).val();
                     });
                     $("#iCalURL").val(url);
+                    $("#iCalURL").siblings('.help-block').html(iCalURLHelpText + '<br>To add the calendar to your Google Calendar, click <a href="http://www.google.com/calendar/render?cid=' + encodeURIComponent(url) + '" target="_blank">here</a>.');
                     $("#iCalURL").parents('.control-group').addClass('success');
                 });
 
