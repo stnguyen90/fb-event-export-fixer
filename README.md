@@ -16,7 +16,7 @@ Features
 
 To Do
 -----
-- input validation
+
 
 Questions, Comments, Feature Requests, or Bug Reports?
 ------------------------------------------------------

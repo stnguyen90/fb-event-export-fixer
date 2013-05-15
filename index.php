@@ -154,42 +154,107 @@ and the calendar will display nothing.
             {
                 // update the UID and Key inputs when the url input is changed
                 $("#url").on('keyup', function()
-                {
+                {   
+                    var error = false;
+
                     var url = $(this).val();
-                    var query = url.split("?")[1];
-                    for (var pairIdx in query.split("&") )
+                    var urlArray = url.split("?");
+                    if ( urlArray.length != 2 )
                     {
-                        var pairArray = query.split("&")[pairIdx].split("=");
-                        if ( pairArray[0] == 'uid' )
+                        error = true;
+                    }
+                    else
+                    {
+                        var query = urlArray[1];
+                        var queryArray = query.split("&");
+                        if ( queryArray.length != 2 )
                         {
-                            $("#uid").val(pairArray[1]);
-                            $("#uid").parents('.control-group').addClass('info');
+                            error = true;
                         }
-                        else if ( pairArray[0] == 'key' )
+                        else
                         {
-                            $("#key").val(pairArray[1]);
-                            $("#key").parents('.control-group').addClass('info');
+                            for ( var queryIdx in queryArray )
+                            {
+                                var pairArray = queryArray[queryIdx].split("=");
+                                if ( pairArray.length != 2 )
+                                {
+                                    error = true;
+                                }
+                                else
+                                {
+                                    if ( pairArray[0] == 'uid' )
+                                    {
+                                        $("#uid").val(pairArray[1]);
+                                    }
+                                    else if ( pairArray[0] == 'key' )
+                                    {
+                                        $("#key").val(pairArray[1]);
+                                    }
+                                }
+                                
+                            }
                         }
                     }
-
+                    
+                    if ( error )
+                    {
+                        $("#uid").val('');
+                        $("#key").val('');
+                    }
+                    
                     $("#key, #uid").trigger('change');
                 });
 
                 // update the iCalURL button when the UID, Key inputs or Include checkboxes are changed
                 $("#key, #uid, .includes").on('change', function()
                 {
+                    var error = false;
+
                     var uid = $("#uid").val();
                     var key = $("#key").val();
+                    var validationObj = { 'uid' : uid, 'key' : key };
+                    for ( var key in validationObj )
+                    {
+                        var value = validationObj[key];
+                        if ( value.length == 0 )
+                        {
+                            $('#' + key).parents('.control-group').attr('class', 'control-group');
+                            error = true;
+                        }
+                        else if ( (key == 'uid' && value.match(/^\d+$/) == null) || (key == 'key' && value.match(/^[A-z]+$/) == null) )
+                        {
+                            $('#' + key).parents('.control-group').attr('class', 'control-group error');
+                            error = true;
+                        }
+                        else
+                        {
+                            $('#' + key).parents('.control-group').attr('class', 'control-group success');
+                        }
+                    }
+
                     var includes = $(".includes:checked");
                     var url = window.location.href + 'parse.php?uid=' + uid + '&key=' + key;
                     includes.each(function(i, elem)
                     {
                         url += '&includes[]=' + includes.eq(i).val();
                     });
-                    $("#iCalURL").val(url);
-                    $("#addToGCal").attr('href', 'http://www.google.com/calendar/render?cid=' + encodeURIComponent(url));
-                    $("#iCalURL").siblings('.btn').removeAttr('disabled');
-                    $("#iCalURL").parents('.control-group').addClass('success');
+
+                    if ( error )
+                    {
+                        $("#iCalURL").val('');
+                        $("#iCalURL").siblings('.btn').attr('disabled', '');
+                        $("#iCalURL").parents('.control-group').removeClass('success');
+                        $("#url").parents('.control-group').addClass('error');
+                    }
+                    else
+                    {
+                        $("#iCalURL").val(url);
+                        $("#addToGCal").attr('href', 'http://www.google.com/calendar/render?cid=' + encodeURIComponent(url));
+                        $("#iCalURL").siblings('.btn').removeAttr('disabled');
+                        $("#iCalURL").parents('.control-group').addClass('success');
+                        $("#url").parents('.control-group').removeClass('error');
+                    }
+                    
                 });
 
                 // initialize the Copy button
